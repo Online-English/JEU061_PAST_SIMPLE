@@ -31,15 +31,28 @@ let perfectStreaks = parseInt(localStorage.getItem('sp_perfect')) || 0;
 let mistakesByCat = getSafeLocalStorage('sp_mistakes_cat', { affirmative: 0, negative: 0, interrogative: 0, short: 0, irregular_errors: 0 });
 
 const themes = {
-    "vert": { primary: "#00FF85", secondary: "#1E90FF", accent: "#FF007F" },
-    "bleu": { primary: "#1E90FF", secondary: "#00FF85", accent: "#FFD700" },
-    "rose": { primary: "#FF007F", secondary: "#1E90FF", accent: "#00FF85" },
-    "jaune": { primary: "#FFD700", secondary: "#FF007F", accent: "#1E90FF" },
-    "rouge": { primary: "#FF3B30", secondary: "#FFD700", accent: "#00FF85" },
-    "violet": { primary: "#A020F0", secondary: "#00FF85", accent: "#FF007F" }
+    "vaporwave": { primary: "#FF007F", secondary: "#00F0FF", accent: "#9A00FF" }, // Lvl 1
+    "matrix": { primary: "#00FF66", secondary: "#0D1B2A", accent: "#00FFCC" },    // Lvl 5
+    "synthwave": { primary: "#FF5E00", secondary: "#FF007F", accent: "#FFFF00" }, // Lvl 10
+    "steampunk": { primary: "#E5A93C", secondary: "#4A2E1B", accent: "#FF4500" }, // Lvl 15
+    "deepspace": { primary: "#4D00FF", secondary: "#00FFD8", accent: "#FF0055" }, // Lvl 20
+    "glitch": { primary: "#FFFFFF", secondary: "#FF003C", accent: "#000000" }      // Lvl 25
 };
 
-const avatarList = ["👤", "👟", "🎒", "🍪", "🎧", "🥷", "🎯", "🧙", "🚀", "🤖", "🐲", "👑"];
+// Les Identités d'Explorateurs Temporels (Avatars débloquables)
+const avatarList = [
+    { icon: "⏳", name: "Voyageur Novice", lvl: 1 },
+    { icon: "🦕", name: "Chasseur de Dinos", lvl: 3 },
+    { icon: "⚔️", name: "Guerrier Médiéval", lvl: 6 },
+    { icon: "🎩", name: "Gentleman Victoria", lvl: 9 },
+    { icon: "📻", name: "Génération Vintage", lvl: 12 },
+    { icon: "💾", name: "Geek des Années 80", lvl: 15 },
+    { icon: "🕹️", name: "Arcade Master 90s", lvl: 18 },
+    { icon: "📼", name: "Vaporwave Surfer", lvl: 21 },
+    { icon: "🚀", name: "Pilote Cyber-Punk", lvl: 24 },
+    { icon: "🤖", name: "Mecha Temporel", lvl: 27 },
+    { icon: "👑", name: "Seigneur du Passé", lvl: 30 }
+];
 
 const menuBaseTexts = {
     "affirmative": "Formes Affirmatives", "negative": "Formes Négatives", "interrogative": "Formes Interrogatives",
@@ -89,7 +102,8 @@ function toggleExamMode() {
 }
 
 function applyTheme(themeName) {
-    let t = themes[themeName] || themes["vert"];
+    // Fallback sur le thème "vaporwave" si l'ancien thème (ex: "vert") n'existe plus
+    let t = themes[themeName] || themes["vaporwave"];
     document.documentElement.style.setProperty('--primary', t.primary);
     document.documentElement.style.setProperty('--secondary', t.secondary);
     document.documentElement.style.setProperty('--accent', t.accent);
@@ -97,12 +111,21 @@ function applyTheme(themeName) {
 
 function syncThemeDropdown() {
     const select = document.getElementById('theme-select'); if(!select) return;
-    let currentLvl = calculateCurrentLevel(); let savedTheme = localStorage.getItem('sp_theme') || "vert";
+    let currentLvl = calculateCurrentLevel(); 
+    let savedTheme = localStorage.getItem('sp_theme') || "vaporwave";
+    
+    // Si l'ancienne valeur stockée n'existe plus dans nos nouveaux thèmes, on réinitialise
+    if (!themes[savedTheme]) savedTheme = "vaporwave";
+
     const themeList = [
-        { id: "vert", name: "🟢 Vert Néon", lvl: 1 }, { id: "bleu", name: "🔵 Bleu Élect.", lvl: 5 },
-        { id: "rose", name: "🌸 Rose Cyber", lvl: 10 }, { id: "jaune", name: "🟡 Jaune Laser", lvl: 15 },
-        { id: "rouge", name: "🔥 Rouge Volcan", lvl: 20 }, { id: "violet", name: "💜 Violet Plasma", lvl: 25 }
+        { id: "vaporwave", name: "🌸 Vaporwave Retro", lvl: 1 },
+        { id: "matrix", name: "📟 Matrix Code", lvl: 5 },
+        { id: "synthwave", name: "🌆 Neon Synthwave", lvl: 10 },
+        { id: "steampunk", name: "⚙️ Steampunk Chrono", lvl: 15 },
+        { id: "deepspace", name: "🌌 Cosmic Deep Space", lvl: 20 },
+        { id: "glitch", name: "💥 Cyber Glitch Art", lvl: 25 }
     ];
+    
     select.innerHTML = themeList.map(t => {
         let isLocked = currentLvl < t.lvl;
         return `<option value="${t.id}" ${isLocked ? 'disabled' : ''}>${t.name} ${isLocked ? `(🔒 Lvl ${t.lvl})` : ''}</option>`;
@@ -193,10 +216,15 @@ function updateMenuStateAndColors() {
 
 function syncAvatarDropdown() {
     const select = document.getElementById('avatar-select'); if(!select) return;
-    let currentLvl = calculateCurrentLevel(); let savedAv = localStorage.getItem('sp_selected_avatar') || "👤";
-    select.innerHTML = avatarList.map((av, idx) => {
-        let requiredLvl = idx * 3 + 1; let isLocked = currentLvl < requiredLvl;
-        return `<option value="${av}" ${isLocked ? 'disabled' : ''}>${av} ${isLocked ? `(🔒 Lvl ${requiredLvl})` : ''}</option>`;
+    let currentLvl = calculateCurrentLevel(); 
+    let savedAv = localStorage.getItem('sp_selected_avatar') || "⏳";
+    
+    // Vérification de sécurité si l'ancien avatar n'est pas dans la nouvelle liste
+    if (!avatarList.some(av => av.icon === savedAv)) savedAv = "⏳";
+
+    select.innerHTML = avatarList.map(av => {
+        let isLocked = currentLvl < av.lvl;
+        return `<option value="${av.icon}" ${isLocked ? 'disabled' : ''}>${av.icon} ${av.name} ${isLocked ? `(🔒 Lvl ${av.lvl})` : ''}</option>`;
     }).join('');
     select.value = savedAv;
 }
