@@ -32,11 +32,11 @@
         
         body { background-color: var(--bg); color: var(--text); font-family: 'Rajdhani', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; -webkit-tap-highlight-color: transparent; }
         header { width: 100%; padding: 12px; text-align: center; background: var(--surface); border-bottom: 2px solid #1a1a24; display: flex; justify-content: space-around; align-items: center; box-sizing: border-box; }
-        header a { color: var(--primary); text-decoration: none; font-weight: bold; font-family: 'Orbitron'; font-size: 0.85rem; letter-spacing: 1px; text-shadow: 0 0 8px rgba(0,255,133,0.3); }
+        header a { color: var(--primary); text-decoration: none; font-weight: bold; font-family: 'Orbitron'; font-size: 0.85rem; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255, 0, 127, 0.3); }
         .theme-tag { color: var(--secondary); font-family: 'Orbitron'; font-weight: 700; font-size: 0.8rem; margin-left: 3px; letter-spacing: 0.5px; }
         
         .nav-btn { background: none; border: 2px solid #2a2a38; color: var(--text); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-family: 'Orbitron'; font-size: 0.7rem; font-weight: 700; transition: 0.2s ease; display: inline-flex; align-items: center; justify-content: center; }
-        .nav-btn:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(0,255,133,0.2); }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
         
         .progress-container { width: 100%; height: 6px; background: #121218; position: relative; }
         .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, var(--secondary), var(--primary)); transition: width 0.4s ease; box-shadow: 0 0 12px var(--primary); }
@@ -55,7 +55,7 @@
         select, input { width: 100%; padding: 15px; margin: 10px 0; background: var(--surface-input); border: 2px solid #222230; border-radius: 14px; color: white; font-size: 16px; font-family: 'Rajdhani'; font-weight: 500; box-sizing: border-box; }
         select:focus, input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 12px rgba(0,255,133,0.15); }
         
-        .btn-main { background: linear-gradient(135deg, var(--primary), #00cc6a); color: #000; border: none; min-height: 50px; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem; font-family: 'Orbitron'; margin-top: 10px; transition: 0.1s ease; box-shadow: 0 4px 15px rgba(0,255,133,0.2); }
+        .btn-main { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #000; border: none; min-height: 50px; padding: 12px; border-radius: 14px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1.1rem; font-family: 'Orbitron'; margin-top: 10px; transition: 0.1s ease; box-shadow: 0 4px 15px rgba(255, 0, 127, 0.2); }
         .btn-main:active { transform: scale(0.98); }
         .btn-share { background: #1a1a26; color: white; border: 2px solid #333344; margin-top: 10px; width: 100%; font-family: 'Orbitron'; font-weight: 700; padding: 14px; border-radius: 12px; cursor: pointer; }
         .btn-exam { background: none; border: 2px solid var(--secondary); color: var(--secondary); width: 100%; padding: 14px; border-radius: 12px; font-family: 'Orbitron'; font-weight: 700; cursor: pointer; margin-top: 25px; transition: 0.2s; }
@@ -166,15 +166,15 @@
     </div>
 
     <div id="rule-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal('rule-modal')">&times;</span>
-        <h2 style="color:var(--primary); font-family:'Orbitron'; margin-top:0; font-size:1.4rem;">SIMPLE PAST : CHEAT SHEET</h2>
-        <div class="rule-card"><h3>AFFIRMATIVE</h3><p>Verbes Réguliers : <b>Base + ed / d / ied</b> (ex: played, studied)<br>Verbes Irréguliers : <b>Forme V2</b> (ex: went, ate, saw)</p></div>
-        <div class="rule-card"><h3>NEGATIVE</h3><p>Tous les sujets + <b>didn't</b> + base verbale (ex: I didn't go)</p></div>
-        <div class="rule-card"><h3>INTERROGATIVE</h3><p><b>Did</b> + sujet + base verbale ? (ex: Did you watch?)</p></div>
-        <div class="rule-card"><h3>SHORT ANSWERS</h3><p>Yes, I <b>did</b>. / No, he <b>didn't</b>.</p></div>
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('rule-modal')">&times;</span>
+            <h2 style="color:var(--primary); font-family:'Orbitron'; margin-top:0; font-size:1.4rem;">SIMPLE PAST : CHEAT SHEET</h2>
+            <div class="rule-card"><h3>AFFIRMATIVE</h3><p>Verbes Réguliers : <b>Base + ed / d / ied</b> (ex: played, studied)<br>Verbes Irréguliers : <b>Forme V2</b> (ex: went, ate, saw)</p></div>
+            <div class="rule-card"><h3>NEGATIVE</h3><p>Tous les sujets + <b>didn't</b> + base verbale (ex: I didn't go)</p></div>
+            <div class="rule-card"><h3>INTERROGATIVE</h3><p><b>Did</b> + sujet + base verbale ? (ex: Did you watch?)</p></div>
+            <div class="rule-card"><h3>SHORT ANSWERS</h3><p>Yes, I <b>did</b>. / No, he <b>didn't</b>.</p></div>
+        </div>
     </div>
-</div>
 
     <div id="stat-modal" class="modal">
         <div class="modal-content" style="border-color: var(--secondary);">
